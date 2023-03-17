@@ -15,7 +15,7 @@ class Card extends Component<CardProps> {
 
   render() {
     return (
-      <div className={styles.card}>
+      <div className={styles.card} data-testid="card">
         <div className={styles.card__img}>
           <img src={this.props.card.image} alt="product image" />
           <div className={styles.like}></div>

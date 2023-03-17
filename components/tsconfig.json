@@ -19,6 +19,6 @@
     "esModuleInterop": true,
     "baseUrl": "./src",
   },
-  "include": ["src", ".eslint.cjs", "./src/**/*", "styled.d.ts"],
+  "include": ["src", "vite.config.ts", ".eslint.cjs", "./src/**/*", "styled.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

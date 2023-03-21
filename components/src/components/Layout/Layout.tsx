@@ -16,6 +16,12 @@ const Layout = () => {
         >
           About us
         </NavLink>
+        <NavLink
+          to="/tours"
+          style={({ isActive }) => ({ color: isActive ? '#638110de' : '#ffffffde' })}
+        >
+          Add tours
+        </NavLink>
       </header>
       <main className={styles.main}>
         <Outlet />

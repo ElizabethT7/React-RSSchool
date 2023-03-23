@@ -1,0 +1,12 @@
+.form__container {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  justify-content: center;
+  margin: 40px 0 20px 0;
+  padding: 0 10px;
+  max-width: 560px;
+  background: linear-gradient(177.09deg, #FFFFFF 6.15%, #216f0d 202.69%);
+  box-shadow: 0px 4px 4px rgb(0 0 0 / 25%);
+  border-radius: 16px;
+}

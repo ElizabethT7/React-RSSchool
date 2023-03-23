@@ -24,6 +24,10 @@ class SearchBar extends Component<SearchBarProps, { value: string }> {
     event.preventDefault();
   }
 
+  componentWillUnmount(): void {
+    localStorage.setItem('place', this.state.value);
+  }
+
   render() {
     return (
       <div className={styles.search}>

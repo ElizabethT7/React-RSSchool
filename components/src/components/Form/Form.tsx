@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import styles from './Form.module.css';
-import { FormProps } from './types';
+import { FormProps, StateInterface } from './types';
 import today from '../../utils/date';
 import RadioButtons from './RadioButtons';
 
-class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOption: string }> {
+class Form /*<FormValueInterface>*/ extends Component<FormProps, StateInterface> {
   //object: FormValueInterface;
   tourName: React.RefObject<HTMLInputElement>;
   startDate: React.RefObject<HTMLInputElement>;
   travelStyle: React.RefObject<HTMLSelectElement>;
   age: React.RefObject<HTMLSelectElement>;
+  img: React.RefObject<HTMLInputElement>;
+  imgUrl!: string | ArrayBuffer | null;
+  file!: Blob;
   constructor(props: FormProps) {
     super(props);
     this.state = {
       selectedOption: '',
+      file: '',
+      imagePreviewUrl: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -21,6 +26,7 @@ class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOptio
     this.startDate = React.createRef();
     this.travelStyle = React.createRef();
     this.age = React.createRef();
+    this.img = React.createRef();
   }
 
   onChangeValue(e: React.FormEvent) {
@@ -35,16 +41,42 @@ class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOptio
     return a;
   }
 
+  handleImageChange(e: React.BaseSyntheticEvent<HTMLInputElement> | React.FormEvent) {
+    e.preventDefault();
+
+    const reader = new FileReader();
+    this.file = e.target.files[0];
+    console.log(e.target);
+    reader.onloadend = () => {
+      this.imgUrl = reader.result;
+      /*this.setState({
+        file: this.file,
+        imagePreviewUrl: reader.result,
+      });*/
+    };
+
+    reader.readAsDataURL(this.file);
+  }
+
   handleSubmit(event: React.FormEvent) {
     const ageValue = this.onChange;
     console.log('2:', ageValue);
+    console.log('handle uploading-', this.state.file);
     event.preventDefault();
+    if ((this.tourName.current as HTMLInputElement).value.length < 3) {
+      alert('Tour name mast be more then 3 symbols;');
+      return;
+    }
     this.props.onSubmit({
-      tourName: (this.tourName.current as HTMLInputElement).value,
+      title: (this.tourName.current as HTMLInputElement).value,
       startDate: (this.startDate.current as HTMLInputElement).value,
       travelStyle: (this.travelStyle.current as HTMLSelectElement).value,
       age: this.state.selectedOption,
+      img: this.imgUrl,
     });
+    (this.tourName.current as HTMLInputElement).value = '';
+    (this.startDate.current as HTMLInputElement).value = today;
+    (this.travelStyle.current as HTMLSelectElement).value = 'Active Adventure';
   }
 
   render() {
@@ -69,7 +101,7 @@ class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOptio
         <label htmlFor="travelStyle">Travel Style:</label>
         <select
           className={styles.form__item}
-          defaultValue="adventure"
+          defaultValue="Active Adventure"
           name="travelStyle"
           ref={this.travelStyle}
         >
@@ -105,6 +137,7 @@ class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOptio
           any
         </div>
         <RadioButtons onChange={this.onChange} />
+        <input type="file" ref={this.img} onChange={(e) => this.handleImageChange(e)} />
         <label htmlFor="agree">
           I agree:
           <input className={styles.check} type="checkbox" defaultValue="" name="agree" required />
@@ -116,3 +149,12 @@ class Form /*<FormValueInterface>*/ extends Component<FormProps, { selectedOptio
 }
 
 export default Form;
+
+/*
+const { imagePreviewUrl } = this.state;
+    let $imagePreview = null;
+    if (imagePreviewUrl) {
+      $imagePreview = <img src={imagePreviewUrl} />;
+    } else {
+      $imagePreview = <div className="previewText">Please select an Image for Preview</div>;
+    } */

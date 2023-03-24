@@ -1,8 +1,9 @@
 export interface FormFieldsProps {
-  tourName: string;
+  title: string;
   startDate: string;
   travelStyle: string;
   age: string;
+  img: string | ArrayBuffer | null;
 }
 
 export interface FormProps {
@@ -17,4 +18,10 @@ export interface FormValueInterface {
 
 export interface RadioButtonsProps {
   onChange: (value: string) => void;
+}
+
+export interface StateInterface {
+  selectedOption: string;
+  file: string;
+  imagePreviewUrl: string | ArrayBuffer | null;
 }

@@ -1,5 +1,5 @@
 export default interface ICard {
-  id: number;
+  id?: number;
   title: string;
   description: string;
   destinations: string;
@@ -8,8 +8,7 @@ export default interface ICard {
   discountPercentage: number;
   discountPrice: string;
   save: number;
-  rating: number;
   pricePerDay: number;
-  TourLength: number;
+  tourLength: number;
   image: string;
 }

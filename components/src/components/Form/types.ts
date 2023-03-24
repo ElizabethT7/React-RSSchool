@@ -1,9 +1,16 @@
 export interface FormFieldsProps {
   title: string;
   startDate: string;
-  travelStyle: string;
+  description: string;
+  destinations: string;
   age: string;
-  img: string | ArrayBuffer | null;
+  price: string;
+  discountPercentage: number;
+  discountPrice: string;
+  save: number;
+  pricePerDay: number;
+  tourLength: number;
+  image: string;
 }
 
 export interface FormProps {
@@ -22,6 +29,6 @@ export interface RadioButtonsProps {
 
 export interface StateInterface {
   selectedOption: string;
-  file: string;
+  //file: string;
   imagePreviewUrl: string | ArrayBuffer | null;
 }

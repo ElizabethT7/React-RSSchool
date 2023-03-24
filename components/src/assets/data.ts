@@ -9,9 +9,8 @@ const data = [
     discountPercentage: 20,
     discountPrice: '1,080',
     save: 270,
-    rating: 4.5,
     pricePerDay: 77,
-    TourLength: 14,
+    tourLength: 14,
     image: 'https://cdn.tourradar.com/s3/tour/645x430/67027_5dfb47423685e.jpg',
   },
   {
@@ -24,9 +23,8 @@ const data = [
     discountPercentage: 20,
     discountPrice: '1,041',
     save: 260,
-    rating: 5,
     pricePerDay: 87,
-    TourLength: 12,
+    tourLength: 12,
     image: 'https://cdn.tourradar.com/s3/tour/645x430/98680_63f9dd5654ab7.jpg',
   },
   {
@@ -39,9 +37,8 @@ const data = [
     discountPercentage: 30,
     discountPrice: '1,537',
     save: 658,
-    rating: 5,
     pricePerDay: 85,
-    TourLength: 18,
+    tourLength: 18,
     image: 'https://cdn.tourradar.com/s3/tour/645x430/102207_4f5b1c.jpg',
   },
   {
@@ -54,9 +51,8 @@ const data = [
     discountPercentage: 15,
     discountPrice: '2,660',
     save: 469,
-    rating: 5,
     pricePerDay: 99,
-    TourLength: 27,
+    tourLength: 27,
     image: 'https://cdn.tourradar.com/s3/tour/645x430/101072_5e3ce1ce15de8.jpg',
   },
 ];

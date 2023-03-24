@@ -28,7 +28,7 @@ class Card extends Component<CardProps> {
         </div>
         <div>
           <Price
-            tourLength={this.props.card.TourLength}
+            tourLength={this.props.card.tourLength}
             pricePerDay={this.props.card.pricePerDay}
             save={this.props.card.save}
             price={this.props.card.price}

@@ -30,6 +30,7 @@ export interface FormValueInterface {
   agree: React.RefObject<HTMLInputElement>;
   imgUrl: string;
   selectItems: string[];
+  radioItems: string[];
 }
 
 export interface RadioButtonsProps {

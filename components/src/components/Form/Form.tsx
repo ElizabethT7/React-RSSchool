@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styles from './Form.module.css';
 import { FormProps, FormValueInterface, StateInterface } from './types';
-//import RadioButtons from './RadioButtons';
 
 class Form extends Component<FormProps, StateInterface> {
   object: FormValueInterface;
@@ -26,17 +25,10 @@ class Form extends Component<FormProps, StateInterface> {
       agree: React.createRef(),
       imgUrl: '',
       selectItems: ['Active Adventure', 'Beach', 'Private', 'Group', 'Fully Guided', 'Local'],
+      radioItems: ['18 to 39 year olds', '12 to 59 year olds', 'any'],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
-    //this.onChange = this.onChange.bind(this);
-    /*for (let key in this.object) {
-      [key] = React.createRef();
-    }*/
-    /*Object.keys(this.object).map((element: any) => {
-      element = React.createRef();
-      console.log(element);
-    });*/
   }
 
   onChangeValue(e: React.FormEvent) {
@@ -44,11 +36,6 @@ class Form extends Component<FormProps, StateInterface> {
       selectedOption: (e.target as HTMLInputElement).value,
     });
   }
-
-  /*onChange(value: string) {
-    this.checked = value;
-    return this.checked;
-  }*/
 
   handleImageChange(e: React.BaseSyntheticEvent<HTMLInputElement> | React.FormEvent) {
     e.preventDefault();
@@ -62,8 +49,6 @@ class Form extends Component<FormProps, StateInterface> {
 
   handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    console.log(this.checked);
-    //console.log(this.onChange);
     if ((this.object.tourName.current as HTMLInputElement).value.length < 3) {
       alert('Tour name mast be more then 3 symbols;');
       return;
@@ -144,27 +129,17 @@ class Form extends Component<FormProps, StateInterface> {
         </select>
         <label>Select an age range</label>
         <div>
-          <input
-            type="radio"
-            value="18 to 39 year olds"
-            checked={this.state.selectedOption === '18 to 39 year olds'}
-            onChange={this.onChangeValue}
-          />
-          18 to 39 year olds
-          <input
-            type="radio"
-            value="12 to 59 year olds"
-            checked={this.state.selectedOption === '12 to 59 year olds'}
-            onChange={this.onChangeValue}
-          />
-          12 to 59 year olds
-          <input
-            type="radio"
-            value="any"
-            checked={this.state.selectedOption === 'any'}
-            onChange={this.onChangeValue}
-          />
-          any
+          {this.object.radioItems.map((radio, index) => (
+            <div className={styles.radio__container} key={index}>
+              <input
+                type="radio"
+                value={radio}
+                checked={this.state.selectedOption === radio}
+                onChange={this.onChangeValue}
+              />
+              {radio}
+            </div>
+          ))}
         </div>
 
         <div className={styles.price}>
@@ -218,5 +193,3 @@ class Form extends Component<FormProps, StateInterface> {
 }
 
 export default Form;
-
-//<RadioButtons onChange={this.onChange} />

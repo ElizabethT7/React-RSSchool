@@ -31,6 +31,10 @@ label {
   margin: 20px 10px 0 10px;
 }
 
+.radio__container {
+  display: inline;
+}
+
 .button {
   width: 96%;
   height: 40px;

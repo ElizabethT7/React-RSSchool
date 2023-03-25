@@ -25,6 +25,7 @@ class Form extends Component<FormProps, StateInterface> {
       discount: React.createRef(),
       agree: React.createRef(),
       imgUrl: '',
+      selectItems: ['Active Adventure', 'Beach', 'Private', 'Group', 'Fully Guided', 'Local'],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -135,12 +136,11 @@ class Form extends Component<FormProps, StateInterface> {
           ref={this.object.travelStyle}
         >
           <option value="" disabled></option>
-          <option value="Active Adventure">Active Adventure</option>
-          <option value="beach">Beach</option>
-          <option value="private">Private</option>
-          <option value="group">Group</option>
-          <option value="guider">Fully Guided</option>
-          <option value="local">Local Living</option>
+          {this.object.selectItems.map((option, index) => (
+            <option value={option} key={index}>
+              {option}
+            </option>
+          ))}
         </select>
         <label>Select an age range</label>
         <div>

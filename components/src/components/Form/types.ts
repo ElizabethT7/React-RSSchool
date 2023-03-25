@@ -29,6 +29,7 @@ export interface FormValueInterface {
   discount: React.RefObject<HTMLInputElement>;
   agree: React.RefObject<HTMLInputElement>;
   imgUrl: string;
+  selectItems: string[];
 }
 
 export interface RadioButtonsProps {

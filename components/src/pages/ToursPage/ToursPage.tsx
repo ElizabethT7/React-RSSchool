@@ -4,8 +4,8 @@ import { FormFieldsProps } from 'components/Form/types';
 import styles from './ToursPage.module.css';
 import Card from '../../components/Card/Card';
 
-class ToursPage extends Component<FormFieldsProps, { cards: FormFieldsProps[] }> {
-  constructor(props: FormFieldsProps) {
+class ToursPage extends Component<Record<string, never>, { cards: FormFieldsProps[] }> {
+  constructor(props: Record<string, never>) {
     super(props);
     this.state = {
       cards: [],

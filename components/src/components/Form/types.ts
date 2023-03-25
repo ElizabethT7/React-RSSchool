@@ -21,6 +21,14 @@ export interface FormValueInterface {
   tourName: React.RefObject<HTMLInputElement>;
   startDate: React.RefObject<HTMLInputElement>;
   travelStyle: React.RefObject<HTMLSelectElement>;
+  age: React.RefObject<HTMLSelectElement>;
+  img: React.RefObject<HTMLInputElement>;
+  destinations: React.RefObject<HTMLInputElement>;
+  tourLength: React.RefObject<HTMLInputElement>;
+  pricePerDay: React.RefObject<HTMLInputElement>;
+  discount: React.RefObject<HTMLInputElement>;
+  agree: React.RefObject<HTMLInputElement>;
+  imgUrl: string;
 }
 
 export interface RadioButtonsProps {

@@ -12,7 +12,6 @@ class ToursPage extends Component<Record<string, never>, { cards: FormFieldsProp
     };
   }
   onSubmit = (FormFields: FormFieldsProps) => {
-    console.log(FormFields);
     this.setState({
       cards: [...this.state.cards, FormFields],
     });

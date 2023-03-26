@@ -177,6 +177,7 @@ class Form extends Component<FormProps, StateInterface> {
             type="text"
             defaultValue=""
             ref={this.object.tourName}
+            data-testid="name"
           />
           {this.state.errors?.name !== undefined && (
             <span className={styles.error}>*{text.errorItems[0]}</span>
@@ -248,6 +249,7 @@ class Form extends Component<FormProps, StateInterface> {
               type="number"
               defaultValue=""
               ref={this.object.tourLength}
+              data-testid="number"
             />
           </label>
           <label className={styles.price__label}>

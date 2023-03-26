@@ -13,9 +13,8 @@ const card = {
   discountPercentage: 20,
   discountPrice: '1,080',
   save: 270,
-  rating: 4.5,
   pricePerDay: 77,
-  TourLength: 14,
+  tourLength: 14,
   image: 'https://cdn.tourradar.com/s3/tour/645x430/67027_5dfb47423685e.jpg',
 };
 

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styles from './Form.module.css';
 import { FormProps, FormValueInterface, StateInterface } from './types';
+import text from './constant';
 
 class Form extends Component<FormProps, StateInterface> {
   object: FormValueInterface;
@@ -25,13 +26,6 @@ class Form extends Component<FormProps, StateInterface> {
       discount: React.createRef(),
       agree: React.createRef(),
       imgUrl: '',
-      selectItems: ['Active Adventure', 'Beach', 'Private', 'Group', 'Fully Guided', 'Local'],
-      radioItems: ['from 18 to 39 year olds', 'from 12to 59 year olds', 'any'],
-      errorItems: [
-        'Tour name mast be more then 3 symbols and starts with uppercased letter',
-        'Destinations mast be input',
-        'Date should be checked',
-      ],
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.onChangeValue = this.onChangeValue.bind(this);
@@ -60,47 +54,89 @@ class Form extends Component<FormProps, StateInterface> {
     const dayPrice = +(this.object.pricePerDay.current as HTMLInputElement).value;
     const discount = +(this.object.discount.current as HTMLInputElement).value;
     this.setState({
-      errors: {
-        /*name: '',
-        destinations: '',
-        date: '',*/
-      },
+      errors: {},
     });
-    console.log('1', this.state.errors);
     if (name.length < 3 || name.charAt(0) !== name.charAt(0).toUpperCase()) {
-      //alert('Tour name mast be more then 3 symbols and starts with uppercased letter');
       this.setState({
         errors: {
           ...this.state.errors,
-          name: this.object.errorItems[0],
+          name: text.errorItems[0],
         },
       });
       return;
     } else if (!(this.object.destinations.current as HTMLInputElement).value.length) {
-      //alert(this.object.errorItems[1]);
       this.setState({
         errors: {
           ...this.state.errors,
-          destinations: this.object.errorItems[1],
+          destinations: text.errorItems[1],
         },
       });
       return;
     } else if ((this.object.startDate.current as HTMLInputElement).value === '') {
-      //alert(this.object.errorItems[2]);
       this.setState({
         errors: {
           ...this.state.errors,
-          date: this.object.errorItems[2],
+          date: text.errorItems[2],
         },
       });
-      console.log(this.state.errors);
+      return;
+    } else if ((this.object.travelStyle.current as HTMLSelectElement).value === '') {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          style: text.errorItems[3],
+        },
+      });
+      return;
+    } else if (this.state.selectedOption === '') {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          age: text.errorItems[4],
+        },
+      });
+      return;
+    } else if ((this.object.tourLength.current as HTMLInputElement).value === '' || days <= 0) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          tourLength: text.errorItems[5],
+        },
+      });
+      return;
+    } else if ((this.object.pricePerDay.current as HTMLInputElement).value === '' || dayPrice < 0) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          pricePerDay: text.errorItems[6],
+        },
+      });
+      return;
+    } else if ((this.object.discount.current as HTMLInputElement).value === '' || discount < 0) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          discount: text.errorItems[7],
+        },
+      });
+      return;
+    } else if (this.object.imgUrl === '') {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          img: text.errorItems[8],
+        },
+      });
+      return;
+    } else if (!(this.object.agree.current as HTMLInputElement).checked) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          agree: text.errorItems[9],
+        },
+      });
       return;
     }
-    /*if (Object.keys(this.state.errors).length === 0) {
-      alert('No errors');
-    }*/
-    console.log(this.state.errors);
-
     this.props.onSubmit({
       title: name,
       startDate: (this.object.startDate.current as HTMLInputElement).value,
@@ -110,8 +146,8 @@ class Form extends Component<FormProps, StateInterface> {
       image: this.object.imgUrl,
       price: `${dayPrice * days}`,
       discountPercentage: discount,
-      discountPrice: `${(dayPrice * days * (100 - discount)) / 100}`,
-      save: +`${dayPrice * days - (dayPrice * days * (100 - discount)) / 100}`,
+      discountPrice: `${Math.floor((dayPrice * days * (100 - discount)) / 100)}`,
+      save: +`${Math.floor(dayPrice * days - (dayPrice * days * (100 - discount)) / 100)}`,
       pricePerDay: dayPrice,
       tourLength: days,
     });
@@ -143,7 +179,7 @@ class Form extends Component<FormProps, StateInterface> {
             ref={this.object.tourName}
           />
           {this.state.errors?.name !== undefined && (
-            <span className={styles.error}>*{this.object.errorItems[0]}</span>
+            <span className={styles.error}>*{text.errorItems[0]}</span>
           )}
         </label>
         <label>
@@ -155,42 +191,39 @@ class Form extends Component<FormProps, StateInterface> {
             ref={this.object.destinations}
           />
           {this.state.errors?.destinations !== undefined && (
-            <span className={styles.error}>*{this.object.errorItems[1]}</span>
+            <span className={styles.error}>*{text.errorItems[1]}</span>
           )}
         </label>
-        <label htmlFor="startDate">
+        <label>
           Start date:
           <input
             className={styles.form__item}
             type="date"
-            //name="startDate"
             ref={this.object.startDate}
             defaultValue=""
           />
-          {this.state.errors?.date !== undefined /*&& this.state.errors?.date !== ''*/ && (
-            <span className={styles.error}>*{this.object.errorItems[2]}</span>
+          {this.state.errors?.date !== undefined && (
+            <span className={styles.error}>*{text.errorItems[2]}</span>
           )}
         </label>
-        <label /*htmlFor="travelStyle"*/>
+        <label>
           Travel Style:
-          <select
-            className={styles.form__item}
-            defaultValue=""
-            //name="travelStyle"
-            ref={this.object.travelStyle}
-          >
+          <select className={styles.form__item} defaultValue="" ref={this.object.travelStyle}>
             <option value="" disabled></option>
-            {this.object.selectItems.map((option, index) => (
+            {text.selectItems.map((option, index) => (
               <option value={option} key={index}>
                 {option}
               </option>
             ))}
           </select>
+          {this.state.errors?.style !== undefined && (
+            <span className={styles.error}>*{text.errorItems[3]}</span>
+          )}
         </label>
         <label>
           Select an age range
           <div className={styles.radio__container}>
-            {this.object.radioItems.map((radio, index) => (
+            {text.radioItems.map((radio, index) => (
               <div className={styles.radio} key={index}>
                 <input
                   type="radio"
@@ -203,50 +236,66 @@ class Form extends Component<FormProps, StateInterface> {
               </div>
             ))}
           </div>
+          {this.state.errors?.age !== undefined && (
+            <span className={styles.error}>*{text.errorItems[4]}</span>
+          )}
         </label>
         <div className={styles.price}>
-          <label htmlFor="tourLength" className={styles.price__label}>
+          <label className={styles.price__label}>
             Tour length:
             <input
               className={styles.price__item}
               type="number"
               defaultValue=""
-              name="tourLength"
               ref={this.object.tourLength}
             />
           </label>
-          <label htmlFor="perDay" className={styles.price__label}>
+          <label className={styles.price__label}>
             Price per day:
             <input
               className={styles.price__item}
               type="number"
               defaultValue=""
-              name="perDay"
               ref={this.object.pricePerDay}
             />
           </label>
-          <label htmlFor="discount" className={styles.price__label}>
+          <label className={styles.price__label}>
             Discount:
             <input
               className={styles.price__item}
               type="number"
               defaultValue=""
-              name="discount"
               ref={this.object.discount}
             />
           </label>
+          <div>
+            {this.state.errors?.tourLength !== undefined && (
+              <span className={styles.error}>*{text.errorItems[5]}</span>
+            )}
+            {this.state.errors?.pricePerDay !== undefined && (
+              <span className={styles.error}>*{text.errorItems[6]}</span>
+            )}
+            {this.state.errors?.discount !== undefined && (
+              <span className={styles.error}>*{text.errorItems[7]}</span>
+            )}
+          </div>
         </div>
         <label className={styles.photo__container}>Add photo</label>
         <input type="file" ref={this.object.img} onChange={(e) => this.handleImageChange(e)} />
-        <label htmlFor="agree">
+        {this.state.errors?.img !== undefined && (
+          <div className={styles.error}>*{text.errorItems[8]}</div>
+        )}
+        <label>
           I agree with the rules of the site:
           <input
             className={styles.check}
             type="checkbox"
             ref={this.object.agree}
             defaultChecked={false}
-            required
           />
+          {this.state.errors?.agree !== undefined && (
+            <span className={styles.error}>*{text.errorItems[9]}</span>
+          )}
         </label>
         <input className={styles.button} type="submit" value="Submit" />
       </form>

@@ -29,9 +29,6 @@ export interface FormValueInterface {
   discount: React.RefObject<HTMLInputElement>;
   agree: React.RefObject<HTMLInputElement>;
   imgUrl: string;
-  selectItems: string[];
-  radioItems: string[];
-  errorItems: string[];
 }
 
 export interface RadioButtonsProps {
@@ -44,6 +41,19 @@ export interface StateInterface {
     name?: string;
     destinations?: string;
     date?: string;
+    style?: string;
+    age?: string;
+    tourLength?: string;
+    pricePerDay?: string;
+    discount?: string;
+    img?: string;
+    agree?: string;
   };
   imagePreviewUrl: string | ArrayBuffer | null;
+}
+
+export interface ConstInterface {
+  selectItems: string[];
+  radioItems: string[];
+  errorItems: string[];
 }

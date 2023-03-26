@@ -31,6 +31,7 @@ export interface FormValueInterface {
   imgUrl: string;
   selectItems: string[];
   radioItems: string[];
+  errorItems: string[];
 }
 
 export interface RadioButtonsProps {
@@ -39,6 +40,10 @@ export interface RadioButtonsProps {
 
 export interface StateInterface {
   selectedOption: string;
-  //file: string;
+  errors: {
+    name?: string;
+    destinations?: string;
+    date?: string;
+  };
   imagePreviewUrl: string | ArrayBuffer | null;
 }

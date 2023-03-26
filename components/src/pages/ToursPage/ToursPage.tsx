@@ -33,7 +33,7 @@ class ToursPage extends Component<Record<string, never>, { cards: FormFieldsProp
             {this.state.cards.map((card, index) => (
               <div key={index} style={{ marginTop: 20 }}>
                 <Card card={card} />
-                <span className={styles.date}>Created: {card.startDate}</span>
+                <span className={styles.date}>Tour start: {card.startDate}</span>
               </div>
             ))}
           </div>

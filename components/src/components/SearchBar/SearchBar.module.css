@@ -1,0 +1,29 @@
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 360px;
+  border: 1px solid #969692;
+  border-radius: 6px;
+  margin-bottom: 40px;
+}
+
+.search__input {
+  background-color: #ffffffde;
+  border: none;
+  width: 300px;
+  height: 20px;
+  padding: 15px;
+  font-size: 18px;
+}
+
+.search__input:focus {
+  outline: none;
+}
+
+.search__ico {
+  width: 24px;
+  height: 24px;
+  background: url("../../assets/svg/search.svg");
+  background-size: cover;
+}

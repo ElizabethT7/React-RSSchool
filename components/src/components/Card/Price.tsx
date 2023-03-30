@@ -17,7 +17,9 @@ class Price extends Component<PriceProps> {
   render() {
     return (
       <div className={styles.price__container}>
-        <div className={styles.discount}>-{this.props.discount}%</div>
+        {this.props.discount !== 0 && (
+          <div className={styles.discount}>-{this.props.discount}%</div>
+        )}
         <div className={styles.details}>
           <div>
             <p className={styles.title}>Tour length</p>
@@ -29,10 +31,14 @@ class Price extends Component<PriceProps> {
           </div>
         </div>
         <div>
-          <p style={{ marginBottom: 0 }}>From €{this.props.price}</p>
-          <span className={styles.line}></span>
+          {this.props.discount !== 0 && (
+            <div>
+              <p style={{ marginBottom: 0 }}>From €{this.props.price}</p>
+              <span className={styles.line}></span>
+            </div>
+          )}
           <p className={styles.price}>€{this.props.discountPrice}</p>
-          <p className={styles.title}>You save: {this.props.save}</p>
+          {this.props.discount !== 0 && <p className={styles.title}>You save: {this.props.save}</p>}
         </div>
       </div>
     );

@@ -7,6 +7,7 @@
 .card__img {
   position: relative;
   width: 232px;
+  height: 154px;
   overflow: hidden;
   margin: 16px;
   border-radius: 2px;
@@ -14,7 +15,8 @@
 
 img {
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   transition: all .3s ease-out;
   cursor: pointer;
 }

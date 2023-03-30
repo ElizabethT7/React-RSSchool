@@ -1,5 +1,3 @@
-import { Component } from 'react';
-
 interface DescriptionProps {
   description: string;
   title: string;
@@ -9,7 +7,7 @@ const container = {
   display: 'flex',
 };
 
-const title = {
+const titleStyle = {
   width: 100,
   fontSize: 12,
   fontWeight: 700,
@@ -26,18 +24,13 @@ const text = {
   marginTop: 2,
 };
 
-class Description extends Component<DescriptionProps> {
-  constructor(props: DescriptionProps) {
-    super(props);
-  }
-  render() {
-    return (
-      <div style={container}>
-        <h4 style={title}>{this.props.title}</h4>
-        <p style={text}>{this.props.description}</p>
-      </div>
-    );
-  }
-}
+const Description = ({ description, title }: DescriptionProps) => {
+  return (
+    <div style={container}>
+      <h4 style={titleStyle}>{title}</h4>
+      <p style={text}>{description}</p>
+    </div>
+  );
+};
 
 export default Description;

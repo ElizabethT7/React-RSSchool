@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
@@ -7,25 +7,24 @@ interface SearchBarProps {
 
 const SearchBar = (props: SearchBarProps) => {
   const [searchValue, setSearchValue] = useState(localStorage.getItem('place') || '');
-
+  const search = useRef<string>(searchValue);
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
     setSearchValue((event.target as HTMLInputElement).value);
+    console.log(search.current);
   };
-
-  const search = useRef<string | RefObject<HTMLInputElement>>();
 
   useEffect(() => {
     search.current = searchValue;
-    return () => {
-      localStorage.setItem('place', searchValue || '');
-    };
   }, [searchValue]);
 
-  /*useEffect(() => {
+  useEffect(() => {
+    console.log('inside', search.current);
+    console.log('inside value', searchValue);
     return () => {
-      localStorage.setItem('place', search.current || '');
+      localStorage.setItem('place', search.current);
     };
-  }, []);*/
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.search}>
@@ -36,7 +35,6 @@ const SearchBar = (props: SearchBarProps) => {
         placeholder={props.placeholder}
         defaultValue={searchValue}
         onChange={handleChange}
-        ref={search}
       />
     </div>
   );

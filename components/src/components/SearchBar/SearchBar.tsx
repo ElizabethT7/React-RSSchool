@@ -1,48 +1,45 @@
-import React, { Component } from 'react';
+import React, { RefObject, useEffect, useRef, useState } from 'react';
 import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
   placeholder: string;
 }
 
-class SearchBar extends Component<SearchBarProps, { value: string }> {
-  constructor(props: SearchBarProps) {
-    super(props);
-    this.state = { value: '' };
+const SearchBar = (props: SearchBarProps) => {
+  const [searchValue, setSearchValue] = useState(localStorage.getItem('place') || '');
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
+    setSearchValue((event.target as HTMLInputElement).value);
+  };
 
-  handleChange(event: React.FocusEvent<HTMLInputElement>) {
-    this.setState({ value: (event.target as HTMLInputElement).value });
-  }
+  const search = useRef<string | RefObject<HTMLInputElement>>();
 
-  handleSubmit(event: React.FocusEvent<HTMLInputElement>) {
-    localStorage.setItem('place', this.state.value);
-    console.log('A place was submitted: ' + localStorage.getItem('place') || ' ');
-    event.preventDefault();
-  }
+  useEffect(() => {
+    search.current = searchValue;
+    return () => {
+      localStorage.setItem('place', searchValue || '');
+    };
+  }, [searchValue]);
 
-  componentWillUnmount(): void {
-    localStorage.setItem('place', this.state.value);
-  }
+  /*useEffect(() => {
+    return () => {
+      localStorage.setItem('place', search.current || '');
+    };
+  }, []);*/
 
-  render() {
-    return (
-      <div className={styles.search}>
-        <div className={styles.search__ico}></div>
-        <input
-          className={styles.search__input}
-          type="text"
-          placeholder={this.props.placeholder}
-          defaultValue={localStorage.getItem('place') || ''}
-          onChange={this.handleChange}
-          onBlur={this.handleSubmit}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.search}>
+      <div className={styles.search__ico}></div>
+      <input
+        className={styles.search__input}
+        type="text"
+        placeholder={props.placeholder}
+        defaultValue={searchValue}
+        onChange={handleChange}
+        ref={search}
+      />
+    </div>
+  );
+};
 
 export default SearchBar;

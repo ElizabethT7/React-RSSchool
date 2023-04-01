@@ -1,189 +1,110 @@
-import React, { useState } from 'react';
+import { useForm, Controller } from 'react-hook-form';
 import styles from './Form.module.css';
-import { FormProps, FormValueInterface } from './types';
+import { FormProps, ErrorsInterface } from './types';
 import text from './constant';
 
 const Form = (props: FormProps) => {
-  const object: FormValueInterface = {
-    tourName: React.createRef(),
-    startDate: React.createRef(),
-    travelStyle: React.createRef(),
-    age: React.createRef(),
-    img: React.createRef(),
-    destinations: React.createRef(),
-    tourLength: React.createRef(),
-    pricePerDay: React.createRef(),
-    discount: React.createRef(),
-    agree: React.createRef(),
-    imgUrl: '',
-  };
-
-  const [selectedOption, setSelectedOption] = useState('');
-  const [errors, setErrors] = useState({
-    name: '',
-    destinations: '',
-    date: '',
-    style: '',
-    age: '',
-    tourLength: '',
-    pricePerDay: '',
-    discount: '',
-    img: '',
-    agree: '',
-  });
+  let imgUrl = '';
   let file!: Blob;
-
-  const onChangeValue = (e: React.FormEvent) => {
-    setSelectedOption((e.target as HTMLInputElement).value);
-  };
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    control,
+  } = useForm<ErrorsInterface>();
 
   const handleImageChange = (e: React.BaseSyntheticEvent<HTMLInputElement> | React.FormEvent) => {
     e.preventDefault();
     const reader = new FileReader();
     file = e.target.files[0];
     reader.onloadend = () => {
-      object.imgUrl = reader.result as string;
+      imgUrl = reader.result as string;
     };
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const name = (object.tourName.current as HTMLInputElement).value;
-    const days = +(object.tourLength.current as HTMLInputElement).value;
-    const dayPrice = +(object.pricePerDay.current as HTMLInputElement).value;
-    const discount = +(object.discount.current as HTMLInputElement).value;
-    setErrors({
-      name: '',
-      destinations: 'string',
-      date: 'string',
-      style: 'string',
-      age: 'string',
-      tourLength: 'string',
-      pricePerDay: 'string',
-      discount: 'string',
-      img: 'string',
-      agree: 'string',
-    });
-    if (name.length < 3 || name.charAt(0) !== name.charAt(0).toUpperCase()) {
-      setErrors({ ...errors, name: text.errorItems[0] });
-      return;
-    } else setErrors({ ...errors, name: 'text.errorItems[0]' });
-    if (!(object.destinations.current as HTMLInputElement).value.length) {
-      setErrors({ ...errors, destinations: text.errorItems[1] });
-      return;
-    } else setErrors({ ...errors, date: '' });
-    if ((object.startDate.current as HTMLInputElement).value === '') {
-      setErrors({ ...errors, date: text.errorItems[2] });
-      return;
-    }
-
-    if ((object.travelStyle.current as HTMLSelectElement).value === '') {
-      setErrors({ ...errors, style: text.errorItems[3] });
-      return;
-    } else setErrors({ ...errors, style: '' });
-
-    /*(object.travelStyle.current as HTMLSelectElement).value === ''
-      ? setErrors({ ...errors, style: text.errorItems[3] })
-      : setErrors({ ...errors, style: '' });
-    return;*/
-    if (selectedOption === '') {
-      setErrors({ ...errors, age: text.errorItems[4] });
-      return;
-    }
-    if ((object.tourLength.current as HTMLInputElement).value === '' || days <= 0) {
-      setErrors({ ...errors, tourLength: text.errorItems[5] });
-      return;
-    }
-    if ((object.pricePerDay.current as HTMLInputElement).value === '' || dayPrice < 0) {
-      setErrors({ ...errors, pricePerDay: text.errorItems[6] });
-      return;
-    }
-    if ((object.discount.current as HTMLInputElement).value === '' || discount < 0) {
-      setErrors({ ...errors, discount: text.errorItems[7] });
-      return;
-    }
-    if (object.imgUrl === '') {
-      setErrors({ ...errors, img: text.errorItems[8] });
-      return;
-    }
-    if (!(object.agree.current as HTMLInputElement).checked) {
-      setErrors({ ...errors, agree: text.errorItems[9] });
-      return;
-    }
+  const submit = (data: ErrorsInterface) => {
+    const name: string = data.name;
+    const days = +data.tourLength;
+    const dayPrice = +data.pricePerDay;
+    const discount = +data.discount;
     props.onSubmit({
       title: name,
-      startDate: (object.startDate.current as HTMLInputElement).value,
-      description: (object.travelStyle.current as HTMLSelectElement).value,
-      destinations: (object.destinations.current as HTMLInputElement).value,
-      age: selectedOption,
-      image: object.imgUrl,
+      startDate: data.date,
+      description: data.style,
+      destinations: data.destinations,
+      age: data.age,
+      image: imgUrl,
       price: `${dayPrice * days}`,
-      discountPercentage: discount,
+      discountPercentage: +data.discount,
       discountPrice: `${Math.floor((dayPrice * days * (100 - discount)) / 100)}`,
       save: +`${Math.floor(dayPrice * days - (dayPrice * days * (100 - discount)) / 100)}`,
       pricePerDay: dayPrice,
       tourLength: days,
     });
-
     alert('The data has been saved');
-    (object.tourName.current as HTMLInputElement).value = '';
-    (object.startDate.current as HTMLInputElement).value = '';
-    (object.travelStyle.current as HTMLSelectElement).value = '';
-    (object.tourLength.current as HTMLInputElement).value = '';
-    (object.pricePerDay.current as HTMLInputElement).value = '';
-    (object.discount.current as HTMLInputElement).value = '';
-    (object.destinations.current as HTMLInputElement).value = '';
-    (object.agree.current as HTMLInputElement).checked = false;
-    object.imgUrl = '';
-    setSelectedOption('');
-    setErrors({
-      name: '',
-      destinations: '',
-      date: '',
-      style: '',
-      age: '',
-      tourLength: '',
-      pricePerDay: '',
-      discount: '',
-      img: '',
-      agree: '',
-    });
+    reset();
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit}>
+    <form className={styles.form} onSubmit={handleSubmit(submit)}>
       <label>
         Tour name:
         <input
           className={styles.form__item}
-          type="text"
+          {...register('name', {
+            required: text.errorItems[0],
+            minLength: {
+              value: 3,
+              message: 'Should be more then 3 symbols',
+            },
+            pattern: {
+              value: /^[A-ZА-Я].+/,
+              message: 'Should starts with uppercased letter',
+            },
+          })}
           defaultValue=""
-          ref={object.tourName}
           data-testid="name"
         />
-        <span className={styles.error}>*{errors.name}</span>
+        <div className={styles.error}>
+          {errors?.name && <p>{errors?.name?.message || 'Error!'}</p>}
+        </div>
       </label>
       <label>
         Destinations:
         <input
           className={styles.form__item}
-          type="text"
+          {...register('destinations', {
+            required: text.errorItems[1],
+          })}
           defaultValue=""
-          ref={object.destinations}
         />
-        {errors?.destinations !== undefined && (
-          <span className={styles.error}>*{errors.destinations}</span>
-        )}
+        <div className={styles.error}>
+          {errors?.destinations && <p>{errors?.destinations?.message || 'Error!'}</p>}
+        </div>
       </label>
       <label>
         Start date:
-        <input className={styles.form__item} type="date" ref={object.startDate} defaultValue="" />
-        {errors?.date !== undefined && <span className={styles.error}>{errors.date}</span>}
+        <input
+          className={styles.form__item}
+          type="date"
+          defaultValue=""
+          {...register('date', {
+            required: text.errorItems[2],
+          })}
+        />
+        {errors?.date && <span className={styles.error}>{errors?.date?.message}</span>}
       </label>
       <label>
         Travel Style:
-        <select className={styles.form__item} defaultValue="" ref={object.travelStyle}>
+        <select
+          className={styles.form__item}
+          defaultValue=""
+          {...register('style', {
+            required: text.errorItems[3],
+          })}
+        >
           <option value="" disabled></option>
           {text.selectItems.map((option, index) => (
             <option value={option} key={index}>
@@ -191,25 +112,33 @@ const Form = (props: FormProps) => {
             </option>
           ))}
         </select>
-        {errors?.style !== undefined && <span className={styles.error}>*{errors.style}</span>}
+        {errors?.style && <span className={styles.error}>{errors?.style?.message}</span>}
       </label>
       <label>
         Select an age range
-        <div className={styles.radio__container}>
-          {text.radioItems.map((radio, index) => (
-            <div className={styles.radio} key={index}>
-              <input
-                type="radio"
-                name={index.toString()}
-                value={radio}
-                checked={selectedOption === radio}
-                onChange={onChangeValue}
-              />
-              {radio}
+        <Controller
+          control={control}
+          name="age"
+          rules={{ required: text.errorItems[4] }}
+          render={({ field: { onChange } }) => (
+            <div className={styles.radio__container}>
+              {text.radioItems.map((radio, index) => (
+                <div className={styles.radio} key={index}>
+                  <input
+                    type="radio"
+                    value={radio}
+                    {...register('age', { required: text.errorItems[4] })}
+                    onChange={onChange}
+                  />
+                  {radio}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        {errors?.age !== undefined && <span className={styles.error}>{errors.age}</span>}
+          )}
+        />
+        {errors.age?.type === 'required' && (
+          <span className={styles.error}>{errors?.age?.message}</span>
+        )}
       </label>
       <div className={styles.price}>
         <label className={styles.price__label}>
@@ -218,7 +147,13 @@ const Form = (props: FormProps) => {
             className={styles.price__item}
             type="number"
             defaultValue=""
-            ref={object.tourLength}
+            {...register('tourLength', {
+              required: text.errorItems[5],
+              min: {
+                value: 1,
+                message: text.errorItems[5],
+              },
+            })}
             data-testid="number"
           />
         </label>
@@ -228,7 +163,13 @@ const Form = (props: FormProps) => {
             className={styles.price__item}
             type="number"
             defaultValue=""
-            ref={object.pricePerDay}
+            {...register('pricePerDay', {
+              required: text.errorItems[6],
+              min: {
+                value: 0,
+                message: text.errorItems[6],
+              },
+            })}
           />
         </label>
         <label className={styles.price__label}>
@@ -237,28 +178,43 @@ const Form = (props: FormProps) => {
             className={styles.price__item}
             type="number"
             defaultValue=""
-            ref={object.discount}
+            {...register('discount', {
+              required: text.errorItems[7],
+              min: {
+                value: 0,
+                message: text.errorItems[7],
+              },
+            })}
           />
         </label>
         <div>
-          {errors?.tourLength !== undefined && (
-            <span className={styles.error}>{errors.tourLength}</span>
+          {errors?.tourLength && <span className={styles.error}>{errors?.tourLength.message}</span>}
+          {errors?.pricePerDay && (
+            <span className={styles.error}>{errors?.pricePerDay?.message}</span>
           )}
-          {errors?.pricePerDay !== undefined && (
-            <span className={styles.error}>{errors.pricePerDay}</span>
-          )}
-          {errors?.discount !== undefined && (
-            <span className={styles.error}>{errors.discount}</span>
-          )}
+          {errors?.discount && <span className={styles.error}>{errors?.discount?.message}</span>}
         </div>
       </div>
       <label className={styles.photo__container}>Add photo</label>
-      <input type="file" ref={object.img} onChange={(e) => handleImageChange(e)} />
-      {errors?.img !== undefined && <div className={styles.error}>{errors.img}</div>}
+      <input
+        type="file"
+        {...register('img', {
+          required: text.errorItems[8],
+        })}
+        onChange={(e) => handleImageChange(e)}
+      />
+      {errors?.img && <div className={styles.error}>{errors?.img?.message}</div>}
       <label>
         I agree with the rules of the site:
-        <input className={styles.check} type="checkbox" ref={object.agree} defaultChecked={false} />
-        {errors?.agree !== undefined && <span className={styles.error}>{errors.agree}</span>}
+        <Controller
+          control={control}
+          {...register('agree', {
+            required: text.errorItems[9],
+          })}
+          rules={{ required: text.errorItems[9] }}
+          render={({ field }) => <input type="checkbox" {...field} />}
+        />
+        {errors?.agree && <span className={styles.error}>{errors?.agree?.message}</span>}
       </label>
       <input className={styles.button} type="submit" value="Submit" />
     </form>

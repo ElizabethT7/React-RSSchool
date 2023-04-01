@@ -1,8 +1,7 @@
-import ICard from './types';
+import { ICard } from './types';
 import Description from './Description';
 import styles from './Card.module.css';
 import Price from './Price';
-
 interface CardProps {
   card: ICard;
 }

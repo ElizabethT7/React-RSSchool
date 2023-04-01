@@ -1,13 +1,5 @@
 import styles from './Price.module.css';
-
-interface PriceProps {
-  tourLength: number;
-  pricePerDay: number;
-  save: number;
-  price: string;
-  discountPrice: string;
-  discount: number;
-}
+import { PriceProps } from './types';
 
 const Price = (props: PriceProps) => {
   return (

@@ -3,7 +3,7 @@ export interface FormFieldsProps {
   startDate: string;
   description: string;
   destinations: string;
-  age?: string;
+  age: string | undefined;
   price: string;
   discountPercentage: number;
   discountPrice: string;

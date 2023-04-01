@@ -2,9 +2,10 @@ import { useForm, Controller } from 'react-hook-form';
 import styles from './Form.module.css';
 import { FormProps, ErrorsInterface } from './types';
 import text from './constant';
+import { useState } from 'react';
 
 const Form = (props: FormProps) => {
-  let imgUrl = '';
+  const [imgUrl, setImgUrl] = useState('');
   let file!: Blob;
   const {
     register,
@@ -19,7 +20,7 @@ const Form = (props: FormProps) => {
     const reader = new FileReader();
     file = e.target.files[0];
     reader.onloadend = () => {
-      imgUrl = reader.result as string;
+      setImgUrl(reader.result as string);
     };
     reader.readAsDataURL(file);
   };
@@ -208,13 +209,19 @@ const Form = (props: FormProps) => {
         I agree with the rules of the site:
         <Controller
           control={control}
-          {...register('agree', {
-            required: text.errorItems[9],
-          })}
+          name="agree"
           rules={{ required: text.errorItems[9] }}
-          render={({ field }) => <input type="checkbox" {...field} />}
+          render={({ field: { onChange } }) => (
+            <input
+              type="checkbox"
+              {...register('agree', { required: text.errorItems[4] })}
+              onChange={onChange}
+            />
+          )}
         />
-        {errors?.agree && <span className={styles.error}>{errors?.agree?.message}</span>}
+        {errors?.agree?.type === 'required' && (
+          <span className={styles.error}>{errors?.agree?.message}</span>
+        )}
       </label>
       <input className={styles.button} type="submit" value="Submit" />
     </form>

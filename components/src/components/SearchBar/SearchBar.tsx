@@ -10,7 +10,6 @@ const SearchBar = (props: SearchBarProps) => {
   const search = useRef<string>(searchValue);
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
     setSearchValue((event.target as HTMLInputElement).value);
-    console.log(search.current);
   };
 
   useEffect(() => {
@@ -18,8 +17,6 @@ const SearchBar = (props: SearchBarProps) => {
   }, [searchValue]);
 
   useEffect(() => {
-    console.log('inside', search.current);
-    console.log('inside value', searchValue);
     return () => {
       localStorage.setItem('place', search.current);
     };

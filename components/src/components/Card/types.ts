@@ -3,7 +3,7 @@ export default interface ICard {
   title: string;
   description: string;
   destinations: string;
-  age: string;
+  age?: string;
   price: string;
   discountPercentage: number;
   discountPrice: string;

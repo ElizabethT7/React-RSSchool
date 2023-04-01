@@ -25,3 +25,8 @@
   color: rgb(181, 183, 182);
   font-size: 12px;
 }
+
+.success {
+  font-size: 1.6rem;
+  color: #638110de;
+}

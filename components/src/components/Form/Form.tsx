@@ -44,7 +44,6 @@ const Form = (props: FormProps) => {
       pricePerDay: dayPrice,
       tourLength: days,
     });
-    alert('The data has been saved');
     reset();
   };
 
@@ -213,6 +212,7 @@ const Form = (props: FormProps) => {
           rules={{ required: text.errorItems[9] }}
           render={({ field: { onChange } }) => (
             <input
+              className={styles.check}
               type="checkbox"
               {...register('agree', { required: text.errorItems[4] })}
               onChange={onChange}

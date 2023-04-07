@@ -11,6 +11,12 @@ const Layout = () => {
           Home
         </NavLink>
         <NavLink
+          to="/viewTours"
+          style={({ isActive }) => ({ color: isActive ? '#638110de' : '#ffffffde' })}
+        >
+          Tours
+        </NavLink>
+        <NavLink
           to="/about"
           style={({ isActive }) => ({ color: isActive ? '#638110de' : '#ffffffde' })}
         >

@@ -1,3 +1,7 @@
+.search__container{
+  display: flex;
+}
+
 .search {
   display: flex;
   align-items: center;
@@ -26,4 +30,13 @@
   height: 24px;
   background: url("../../assets/svg/search.svg");
   background-size: cover;
+}
+
+.search__button {
+  width: 90px;
+  height: 50px;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-weight: 400;
+  margin-left: 10px;
 }

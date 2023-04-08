@@ -67,7 +67,6 @@ img:hover {
 
 .character__content_modal {
   max-width: 40%;
-  padding-top: 20px;
   padding-right: 20px;
   text-align: start;
   margin-left: 56px;
@@ -92,6 +91,7 @@ img:hover {
 
 .character__title_modal {
   font-size: 2rem;
+  margin-top: 0;
   color: #1b311d;
 }
 

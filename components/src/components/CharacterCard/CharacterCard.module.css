@@ -55,3 +55,70 @@ img:hover {
 .character__button {
   margin-bottom: 10px;
 }
+
+.character__img_modal {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  overflow: hidden;
+  margin: 56px 0 56px 56px;
+  border-radius: 5px;
+}
+
+.character__content_modal {
+  max-width: 40%;
+  padding-top: 20px;
+  padding-right: 20px;
+  text-align: start;
+  margin-left: 56px;
+}
+
+@media screen and (max-width: 880px){
+  .character__img_modal {
+    width: 280px;
+    height: 280px;
+    margin: 6px;
+  }
+  .character__content_modal {
+    margin-left: 6px;
+  }
+}
+
+@media screen and (max-width: 620px){ 
+  .character__content_modal {
+    max-width: 80%;
+  }
+}
+
+.character__title_modal {
+  font-size: 2rem;
+  color: #1b311d;
+}
+
+.episodes__container {
+  display: flex;
+  align-items: baseline;
+  font-size: 14px;
+}
+
+.episodes {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 10px;
+}
+
+.episode {
+  padding-right: 2px;
+  font-size: 13px;
+  outline: none;
+  text-decoration: none;
+  color:#1b311d;
+}
+
+.episode:hover {
+  color:#638110de;
+}
+
+.episode:visited {
+  color: #c37113;
+}

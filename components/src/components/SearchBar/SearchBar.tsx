@@ -18,16 +18,16 @@ const SearchBar = (props: SearchBarProps) => {
     search.current = searchValue;
   }, [searchValue]);
 
-  useEffect(() => {
-    return () => {
-      localStorage.setItem('name', search.current);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const onClick = (event: React.MouseEvent) => {
+    event.preventDefault;
+    localStorage.setItem('name', search.current);
+    props.onSearch(searchValue);
+  };
 
   const handleKey = (event: React.KeyboardEvent) => {
     event.preventDefault;
     if (event.code === 'Enter') {
+      localStorage.setItem('name', search.current);
       props.onSearch(searchValue);
     }
   };
@@ -45,7 +45,7 @@ const SearchBar = (props: SearchBarProps) => {
           onKeyDown={handleKey}
         />
       </div>
-      <button className={styles.search__button} onClick={() => props.onSearch(searchValue)}>
+      <button className={styles.search__button} onClick={onClick}>
         Search
       </button>
     </div>

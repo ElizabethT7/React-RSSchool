@@ -8,10 +8,10 @@ const MainPage = () => {
   const [isPending, setIsPending] = useState<boolean>(true);
   const [error, setError] = useState(null);
 
-  const onSearch = (searchValue: string) => {
+  const onSearch = async (searchValue: string) => {
     setIsPending(true);
     console.log(searchValue);
-    fetch(`https://rickandmortyapi.com/api/character/?name=${searchValue}`)
+    await fetch(`https://rickandmortyapi.com/api/character/?name=${searchValue}`)
       .then((res) => {
         if (!res.ok) {
           throw Error('Input other name');

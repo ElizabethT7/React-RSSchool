@@ -19,6 +19,7 @@ const MainPage = () => {
         return res.json();
       })
       .then((data) => {
+        console.log('res', data.results);
         setCharacters(data.results);
         setIsPending(false);
         setError(null);

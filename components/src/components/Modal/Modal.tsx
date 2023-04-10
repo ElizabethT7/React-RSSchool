@@ -14,10 +14,10 @@ const Modal = ({ active, setActive, children }: ModalProps) => {
         className={active ? styles.modal__content_active : styles.modal__content}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className={styles.close} onClick={() => setActive(false)}>
+        <button className={styles.close} onClick={() => setActive(false)}>
           <span className={styles.close__line}></span>
           <span className={styles.close__line}></span>
-        </div>
+        </button>
         {children}
       </div>
     </div>

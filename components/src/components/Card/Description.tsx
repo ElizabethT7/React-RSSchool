@@ -9,7 +9,7 @@ const container = {
 
 const titleStyle = {
   width: 100,
-  fontSize: 12,
+  fontSize: 14,
   fontWeight: 700,
   marginBottom: 0,
   marginTop: 2,
@@ -17,7 +17,7 @@ const titleStyle = {
 
 const text = {
   width: 260,
-  fontSize: 12,
+  fontSize: 13,
   lineHeight: 1.4,
   fontWeight: 400,
   marginBottom: 0,

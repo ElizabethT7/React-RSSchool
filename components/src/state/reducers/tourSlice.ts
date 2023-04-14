@@ -3,14 +3,10 @@ import { FormFieldsProps } from 'components/Form/types';
 
 interface TourState {
   tours: FormFieldsProps[];
-  //isLoading: boolean;
-  //error: string;
 }
 
 const initialState: TourState = {
   tours: [],
-  //isLoading: false,
-  //error: ''
 };
 
 export const tourSlice = createSlice({

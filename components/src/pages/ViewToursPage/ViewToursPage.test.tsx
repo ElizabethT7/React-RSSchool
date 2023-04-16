@@ -1,11 +1,12 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import ViewToursPage from './ViewToursPage';
+import { renderWithProviders } from '../../utils/test-utils';
 
 describe('ViewToursPage', () => {
   it('Renders text', () => {
-    render(<ViewToursPage />);
+    renderWithProviders(<ViewToursPage />);
     expect(screen.getByText(/Search Bar & Cards/i)).toBeInTheDocument();
   });
 });

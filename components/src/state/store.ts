@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import tourReducer from './reducers/tourSlice';
 import characterReducer from './reducers/characterSlice';
 
@@ -7,9 +7,10 @@ const rootReducer = combineReducers({
   characterReducer,
 });
 
-export const setupStore = () => {
+export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
+    preloadedState,
   });
 };
 

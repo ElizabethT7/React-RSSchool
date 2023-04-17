@@ -33,4 +33,6 @@ export const characterSlice = createSlice({
   },
 });
 
+//export const { setCharacterResults } = characterSlice.actions;
+
 export default characterSlice.reducer;

@@ -1,27 +1,25 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './SearchBar.module.css';
 import { fetchCharacters } from '../../state/reducers/ActionCreators';
-import { useAppDispatch } from '../../state/hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../state/hooks/redux';
+import { searchSlice } from '../../state/reducers/searchSlice';
 
 interface SearchBarProps {
   placeholder: string;
 }
 
 const SearchBar = ({ placeholder }: SearchBarProps) => {
-  const [searchValue, setSearchValue] = useState('');
-  const search = useRef<string>(searchValue);
+  const { search } = useAppSelector((state) => state.searchReducer);
+  const { submitValue } = searchSlice.actions;
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
     event.preventDefault;
-    setSearchValue((event.target as HTMLInputElement).value);
+    const value = event.target.value;
+    dispatch(submitValue(value));
   };
-
-  useEffect(() => {
-    search.current = searchValue;
-  }, [searchValue]);
 
   const onClick = (event: React.MouseEvent) => {
     event.preventDefault;
-    dispatch(fetchCharacters(searchValue));
+    dispatch(fetchCharacters(search));
   };
 
   const dispatch = useAppDispatch();
@@ -29,12 +27,12 @@ const SearchBar = ({ placeholder }: SearchBarProps) => {
   const handleKey = (event: React.KeyboardEvent) => {
     event.preventDefault;
     if (event.code === 'Enter') {
-      dispatch(fetchCharacters(searchValue));
+      dispatch(fetchCharacters(search));
     }
   };
 
   useEffect(() => {
-    dispatch(fetchCharacters(searchValue));
+    dispatch(fetchCharacters(search));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,7 +44,7 @@ const SearchBar = ({ placeholder }: SearchBarProps) => {
           className={styles.search__input}
           type="text"
           placeholder={placeholder}
-          defaultValue={searchValue}
+          defaultValue={search}
           onChange={handleChange}
           onKeyDown={handleKey}
         />

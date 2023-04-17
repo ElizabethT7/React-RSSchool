@@ -47,6 +47,7 @@ describe('MainPage', () => {
           characters: initialCharacters,
         },
       });
+      expect(getByText);
       expect(screen.findByText(/Aqua/i)).toBeInTheDocument();
     });
   });

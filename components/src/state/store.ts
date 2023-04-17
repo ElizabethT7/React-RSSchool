@@ -1,10 +1,12 @@
 import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
 import tourReducer from './reducers/tourSlice';
 import characterReducer from './reducers/characterSlice';
+import searchReducer from './reducers/searchSlice';
 
 const rootReducer = combineReducers({
   tourReducer,
   characterReducer,
+  searchReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

@@ -1,7 +1,7 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import ICharacter from '../../components/CharacterCard/types';
 
-interface CharacterState {
+export interface CharacterState {
   characters: ICharacter[];
   isLoading: boolean;
   error: string;
@@ -32,7 +32,5 @@ export const characterSlice = createSlice({
     },
   },
 });
-
-//export const { setCharacterResults } = characterSlice.actions;
 
 export default characterSlice.reducer;

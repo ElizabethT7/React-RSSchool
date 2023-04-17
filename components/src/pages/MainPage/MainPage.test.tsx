@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import MainPage from './MainPage';
 
 import { renderWithProviders } from '../../utils/test-utils';
+import { CharacterState } from '../../state/reducers/characterSlice';
 
 describe('MainPage', () => {
   it('Renders text', () => {
@@ -17,34 +18,38 @@ describe('MainPage', () => {
 
     expect(screen.queryByText(/Aqua/i)).toBeNull();
     it('Card preloaded state to render', () => {
-      const initialCharacters = [
-        {
-          id: 21,
-          name: 'Aqua Morty',
-          status: 'unknown',
-          species: 'Humanoid',
-          type: 'Fish-Person',
-          gender: 'Male',
-          origin: {
-            name: 'unknown',
-            url: '',
+      const initialCharacters: CharacterState = {
+        characters: [
+          {
+            id: 21,
+            name: 'Aqua Morty',
+            status: 'unknown',
+            species: 'Humanoid',
+            type: 'Fish-Person',
+            gender: 'Male',
+            origin: {
+              name: 'unknown',
+              url: '',
+            },
+            location: {
+              name: 'Citadel of Ricks',
+              url: 'https://rickandmortyapi.com/api/location/3',
+            },
+            image: 'https://rickandmortyapi.com/api/character/avatar/21.jpeg',
+            episode: [
+              'https://rickandmortyapi.com/api/episode/10',
+              'https://rickandmortyapi.com/api/episode/22',
+            ],
+            url: 'https://rickandmortyapi.com/api/character/21',
+            created: '2017-11-04T22:39:48.055Z',
           },
-          location: {
-            name: 'Citadel of Ricks',
-            url: 'https://rickandmortyapi.com/api/location/3',
-          },
-          image: 'https://rickandmortyapi.com/api/character/avatar/21.jpeg',
-          episode: [
-            'https://rickandmortyapi.com/api/episode/10',
-            'https://rickandmortyapi.com/api/episode/22',
-          ],
-          url: 'https://rickandmortyapi.com/api/character/21',
-          created: '2017-11-04T22:39:48.055Z',
-        },
-      ];
+        ],
+        isLoading: false,
+        error: '',
+      };
       const { getByText } = renderWithProviders(<MainPage />, {
         preloadedState: {
-          characters: initialCharacters,
+          characterReducer: initialCharacters,
         },
       });
       expect(getByText);

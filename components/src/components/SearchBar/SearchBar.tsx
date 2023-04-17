@@ -6,9 +6,11 @@ import { searchSlice } from '../../state/reducers/searchSlice';
 
 interface SearchBarProps {
   placeholder: string;
+  onSearch: (inputValue: string) => void;
 }
 
-const SearchBar = ({ placeholder }: SearchBarProps) => {
+const SearchBar = ({ placeholder, onSearch }: SearchBarProps) => {
+  const dispatch = useAppDispatch();
   const { search } = useAppSelector((state) => state.searchReducer);
   const { submitValue } = searchSlice.actions;
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
@@ -19,15 +21,13 @@ const SearchBar = ({ placeholder }: SearchBarProps) => {
 
   const onClick = (event: React.MouseEvent) => {
     event.preventDefault;
-    dispatch(fetchCharacters(search));
+    onSearch(search);
   };
-
-  const dispatch = useAppDispatch();
 
   const handleKey = (event: React.KeyboardEvent) => {
     event.preventDefault;
     if (event.code === 'Enter') {
-      dispatch(fetchCharacters(search));
+      onSearch(search);
     }
   };
 

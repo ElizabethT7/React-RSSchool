@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-//import { FormFieldsProps } from 'components/Form/types';
 
 interface SearchState {
   search: string;

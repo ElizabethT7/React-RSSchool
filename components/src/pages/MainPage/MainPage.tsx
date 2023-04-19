@@ -1,60 +1,22 @@
+import { useAppDispatch, useAppSelector } from '../../state/hooks/redux';
 import CharacterCard from '../../components/CharacterCard/CharacterCard';
 import SearchBar from '../../components/SearchBar/SearchBar';
+import { fetchCharacters } from '../../state/reducers/ActionCreators';
 import style from './MainPage.module.css';
-import { useEffect, useState } from 'react';
 
 const MainPage = () => {
-  const [characters, setCharacters] = useState([]);
-  const [isPending, setIsPending] = useState<boolean>(true);
-  const [error, setError] = useState(null);
-
-  const onSearch = async (searchValue: string) => {
-    setIsPending(true);
-    console.log(searchValue);
-    await fetch(`https://rickandmortyapi.com/api/character/?name=${searchValue}`)
-      .then((res) => {
-        if (!res.ok) {
-          throw Error('Input other name');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        console.log('res', data.results);
-        setCharacters(data.results);
-        setIsPending(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setIsPending(false);
-        setError(err.message);
-      });
+  const dispatch = useAppDispatch();
+  const { characters, isLoading, error } = useAppSelector((state) => state.characterReducer);
+  const onSearch = (inputValue: string) => {
+    dispatch(fetchCharacters(inputValue));
   };
-
-  useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character`)
-      .then((res) => {
-        if (!res.ok) {
-          throw Error('Could not fetch the data from this resource');
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setCharacters(data.results);
-        setIsPending(false);
-        setError(null);
-      })
-      .catch((err) => {
-        setIsPending(false);
-        setError(err.message);
-      });
-  }, []);
 
   return (
     <div className={style.container}>
       <h1>Search Bar & Cards</h1>
       <SearchBar placeholder="Input name..." onSearch={onSearch} />
       {error && <div>{error}</div>}
-      {isPending ? (
+      {isLoading ? (
         <div>Loading ...</div>
       ) : (
         <div className={style.characters}>

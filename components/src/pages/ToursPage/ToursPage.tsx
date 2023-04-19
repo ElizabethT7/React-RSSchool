@@ -3,13 +3,18 @@ import Form from '../../components/Form/Form';
 import { FormFieldsProps } from 'components/Form/types';
 import styles from './ToursPage.module.css';
 import Card from '../../components/Card/Card';
+import { useAppDispatch, useAppSelector } from '../../state/hooks/redux';
+import { tourSlice } from '../../state/reducers/tourSlice';
 
 const ToursPage = () => {
-  const [cards, setCards] = useState<FormFieldsProps[]>([]);
   const [success, setSuccess] = useState(false);
 
+  const { tours } = useAppSelector((state) => state.tourReducer);
+  const { addTour } = tourSlice.actions;
+  const dispatch = useAppDispatch();
+
   const onSubmit = (FormFields: FormFieldsProps) => {
-    setCards([...cards, FormFields]);
+    dispatch(addTour(FormFields));
     setSuccess(true);
     setTimeout(() => {
       setSuccess(false);
@@ -28,7 +33,7 @@ const ToursPage = () => {
       <section>
         <h3>Tours</h3>
         <div className={styles.tours__container}>
-          {cards.map((card, index) => (
+          {tours.map((card, index) => (
             <div key={index} style={{ marginTop: 20 }}>
               <Card card={card} />
               <span className={styles.date}>Tour start: {card.startDate}</span>

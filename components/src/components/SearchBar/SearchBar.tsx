@@ -1,36 +1,40 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect } from 'react';
 import styles from './SearchBar.module.css';
+import { fetchCharacters } from '../../state/reducers/ActionCreators';
+import { useAppDispatch, useAppSelector } from '../../state/hooks/redux';
+import { searchSlice } from '../../state/reducers/searchSlice';
 
 interface SearchBarProps {
   placeholder: string;
   onSearch: (inputValue: string) => void;
 }
 
-const SearchBar = (props: SearchBarProps) => {
-  const [searchValue, setSearchValue] = useState(localStorage.getItem('name') || '');
-  const search = useRef<string>(searchValue);
+const SearchBar = ({ placeholder, onSearch }: SearchBarProps) => {
+  const dispatch = useAppDispatch();
+  const { search } = useAppSelector((state) => state.searchReducer);
+  const { submitValue } = searchSlice.actions;
   const handleChange = (event: React.FocusEvent<HTMLInputElement>) => {
     event.preventDefault;
-    setSearchValue((event.target as HTMLInputElement).value);
+    const value = event.target.value;
+    dispatch(submitValue(value));
   };
-
-  useEffect(() => {
-    search.current = searchValue;
-  }, [searchValue]);
 
   const onClick = (event: React.MouseEvent) => {
     event.preventDefault;
-    localStorage.setItem('name', search.current);
-    props.onSearch(searchValue);
+    onSearch(search);
   };
 
   const handleKey = (event: React.KeyboardEvent) => {
     event.preventDefault;
     if (event.code === 'Enter') {
-      localStorage.setItem('name', search.current);
-      props.onSearch(searchValue);
+      onSearch(search);
     }
   };
+
+  useEffect(() => {
+    dispatch(fetchCharacters(search));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className={styles.search__container}>
@@ -39,8 +43,8 @@ const SearchBar = (props: SearchBarProps) => {
         <input
           className={styles.search__input}
           type="text"
-          placeholder={props.placeholder}
-          defaultValue={searchValue}
+          placeholder={placeholder}
+          defaultValue={search}
           onChange={handleChange}
           onKeyDown={handleKey}
         />

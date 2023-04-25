@@ -5,7 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build:client": "vite build --outDir ./dist/client",
+    "build:server": "vite build --outDir ./dist/server --ssr src/entry-server.tsx",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node server.js",
     "preview": "vite preview",
     "lint": "eslint . --ext .ts,.tsx",
     "test": "vitest",
@@ -13,6 +16,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
+    "express": "^4.18.2",
     "msw": "^1.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

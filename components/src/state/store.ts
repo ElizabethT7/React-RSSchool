@@ -1,7 +1,12 @@
-import { PreloadedState, combineReducers, configureStore } from '@reduxjs/toolkit';
+import * as toolkitRaw from '@reduxjs/toolkit';
 import tourReducer from './reducers/tourSlice';
 import characterReducer from './reducers/characterSlice';
 import searchReducer from './reducers/searchSlice';
+
+type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
+
+const { combineReducers, configureStore } = ((toolkitRaw as TypeToolkitRaw).default ??
+  toolkitRaw) as typeof toolkitRaw;
 
 const rootReducer = combineReducers({
   tourReducer,
@@ -9,7 +14,7 @@ const rootReducer = combineReducers({
   searchReducer,
 });
 
-export const setupStore = (preloadedState?: PreloadedState<RootState>) => {
+export const setupStore = (preloadedState?: toolkitRaw.PreloadedState<RootState>) => {
   return configureStore({
     reducer: rootReducer,
     preloadedState,

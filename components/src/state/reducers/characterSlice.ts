@@ -1,5 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as toolkitRaw from '@reduxjs/toolkit';
 import ICharacter from '../../components/CharacterCard/types';
+
+type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
+
+const { createSlice } = ((toolkitRaw as TypeToolkitRaw).default ?? toolkitRaw) as typeof toolkitRaw;
 
 export interface CharacterState {
   characters: ICharacter[];
@@ -20,12 +24,15 @@ export const characterSlice = createSlice({
     charactersFetching(state: CharacterState) {
       state.isLoading = true;
     },
-    charactersFetchingSuccess(state: CharacterState, action: PayloadAction<ICharacter[]>) {
+    charactersFetchingSuccess(
+      state: CharacterState,
+      action: toolkitRaw.PayloadAction<ICharacter[]>
+    ) {
       state.isLoading = false;
       state.error = '';
       state.characters = action.payload;
     },
-    charactersFetchingError(state: CharacterState, action: PayloadAction<string>) {
+    charactersFetchingError(state: CharacterState, action: toolkitRaw.PayloadAction<string>) {
       state.isLoading = false;
       state.characters = [];
       state.error = action.payload;

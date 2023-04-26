@@ -1,4 +1,8 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import * as toolkitRaw from '@reduxjs/toolkit';
+
+type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
+
+const { createSlice } = ((toolkitRaw as TypeToolkitRaw).default ?? toolkitRaw) as typeof toolkitRaw;
 
 interface SearchState {
   search: string;
@@ -12,7 +16,7 @@ export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    submitValue(state, action: PayloadAction<string>) {
+    submitValue(state, action: toolkitRaw.PayloadAction<string>) {
       state.search = action.payload;
     },
   },

@@ -1,5 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import * as toolkitRaw from '@reduxjs/toolkit';
+//import { createSlice } from '@reduxjs/toolkit';
 import { FormFieldsProps } from 'components/Form/types';
+
+//import { configureStore } from '@reduxjs/toolkit';
+
+type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
+
+const { createSlice } = ((toolkitRaw as TypeToolkitRaw).default ?? toolkitRaw) as typeof toolkitRaw;
 
 interface TourState {
   tours: FormFieldsProps[];

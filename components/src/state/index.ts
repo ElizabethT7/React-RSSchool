@@ -1,5 +1,4 @@
 import * as toolkitRaw from '@reduxjs/toolkit';
-//import { configureStore } from '@reduxjs/toolkit';
 
 type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
 

@@ -9,19 +9,19 @@ import { setupStore } from './state/store';
 
 const store = setupStore();
 
-interface IRenderProps {
+/*interface IRenderProps {
   path: string;
   options?: ReactDOMServer.RenderToPipeableStreamOptions;
-}
+}*/
 
-const render = ({ path, options }: IRenderProps) => {
+const render = (path: string, options: ReactDOMServer.RenderToPipeableStreamOptions) => {
   const stream = renderToPipeableStream(
     <StaticRouter location={path}>
       <Provider store={store}>
         <App />
       </Provider>
     </StaticRouter>,
-    options
+    { ...options }
   );
   return stream;
 };

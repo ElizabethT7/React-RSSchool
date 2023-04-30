@@ -7,17 +7,20 @@ import { ViteDevServer, createServer as createViteServer } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 //const isTest = process.env.VITEST;
 
-async function createServer() {
+async function createServer(root = process.cwd()) {
   const app = express();
 
+  //app.use(express.static('dist'));
+
   const vite: ViteDevServer = await createViteServer({
+    root,
     server: { middlewareMode: true },
     appType: 'custom',
   });
 
   app.use(vite.middlewares);
 
-  app.use('*', async (req, res) => {
+  app.get('*', async (req, res) => {
     try {
       const url = req.originalUrl;
       let template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
@@ -39,7 +42,7 @@ async function createServer() {
           res.write(parts[1]);
           res.end();
         },
-        onError(err: Error) {
+        onError(err: Error | unknown) {
           console.error(err);
         },
       });
@@ -47,12 +50,14 @@ async function createServer() {
       vite.ssrFixStacktrace(e as Error);
     }
   });
-  return { app, vite };
+  return { app };
 }
 
 //if (!isTest) {
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-createServer().then(({ app }: any) => {
-  app.listen(5137, () => console.log(`listening on http://localhost:5137`));
-});
+createServer()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  .then(({ app }: any) => {
+    app.listen(5173, () => console.log(`listening on http://localhost:5173`));
+  })
+  .catch((e) => console.error(e));
 //}

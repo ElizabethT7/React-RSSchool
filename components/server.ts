@@ -7,13 +7,11 @@ import { ViteDevServer, createServer as createViteServer } from 'vite';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3001;
 
-async function createServer(/*root = process.cwd()*/) {
+async function createServer(root = process.cwd()) {
   const app = express();
 
-  //app.use(express.static('dist'));
-
   const vite: ViteDevServer = await createViteServer({
-    //root,
+    root,
     server: { middlewareMode: true },
     appType: 'custom',
   });
@@ -23,13 +21,11 @@ async function createServer(/*root = process.cwd()*/) {
   app.get('*', async (req, res) => {
     const url = req.originalUrl;
     try {
-      let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-      template = await vite.transformIndexHtml(url, template);
+      const template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
+      const html = await vite.transformIndexHtml(url, template);
       const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
-      const appHtml = await render(url);
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml);
-      res.status(200).setHeader('Content-Type', 'text/html').end(html);
-      const parts = template.toString().split('not render');
+      const parts = html.toString().split('not render');
+      res.status(200).setHeader('Content-Type', 'text/html');
       res.write(parts[0]);
       const stream: ReactDOMServer.PipeableStream = render(url, {
         onShellReady() {

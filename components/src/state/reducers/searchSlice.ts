@@ -5,11 +5,11 @@ type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
 const { createSlice } = ((toolkitRaw as TypeToolkitRaw).default ?? toolkitRaw) as typeof toolkitRaw;
 
 interface SearchState {
-  search: string;
+  searchValue: string;
 }
 
 const initialState: SearchState = {
-  search: '',
+  searchValue: '',
 };
 
 export const searchSlice = createSlice({
@@ -17,7 +17,7 @@ export const searchSlice = createSlice({
   initialState,
   reducers: {
     submitValue(state, action: toolkitRaw.PayloadAction<string>) {
-      state.search = action.payload;
+      state.searchValue = action.payload;
     },
   },
 });

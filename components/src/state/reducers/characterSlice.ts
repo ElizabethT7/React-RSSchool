@@ -1,43 +1,22 @@
-import * as toolkitRaw from '@reduxjs/toolkit';
 import ICharacter from '../../components/CharacterCard/types';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-type TypeToolkitRaw = typeof toolkitRaw & { default?: unknown };
-
-const { createSlice } = ((toolkitRaw as TypeToolkitRaw).default ?? toolkitRaw) as typeof toolkitRaw;
-
-export interface CharacterState {
-  characters: ICharacter[];
-  isLoading: boolean;
-  error: string;
+export interface IResponse {
+  info: {
+    count: number;
+    pages: number;
+  };
+  results: ICharacter[];
 }
 
-const initialState: CharacterState = {
-  characters: [],
-  isLoading: false,
-  error: '',
-};
-
-export const characterSlice = createSlice({
-  name: 'character',
-  initialState,
-  reducers: {
-    charactersFetching(state: CharacterState) {
-      state.isLoading = true;
-    },
-    charactersFetchingSuccess(
-      state: CharacterState,
-      action: toolkitRaw.PayloadAction<ICharacter[]>
-    ) {
-      state.isLoading = false;
-      state.error = '';
-      state.characters = action.payload;
-    },
-    charactersFetchingError(state: CharacterState, action: toolkitRaw.PayloadAction<string>) {
-      state.isLoading = false;
-      state.characters = [];
-      state.error = action.payload;
-    },
-  },
+export const characterApi = createApi({
+  reducerPath: 'characterApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://rickandmortyapi.com/api/character' }),
+  endpoints: (build) => ({
+    fetchAllCharacters: build.query<IResponse, { searchValue?: string }>({
+      query: ({ searchValue = '' }) => ({
+        url: `/?name=${searchValue}`,
+      }),
+    }),
+  }),
 });
-
-export default characterSlice.reducer;

@@ -1,19 +1,19 @@
 import express from 'express';
 import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { ViteDevServer, createServer as createViteServer } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-//const isTest = process.env.VITEST;
+const PORT = process.env.PORT || 3001;
 
-async function createServer(root = process.cwd()) {
+async function createServer(/*root = process.cwd()*/) {
   const app = express();
 
   //app.use(express.static('dist'));
 
   const vite: ViteDevServer = await createViteServer({
-    root,
+    //root,
     server: { middlewareMode: true },
     appType: 'custom',
   });
@@ -21,9 +21,9 @@ async function createServer(root = process.cwd()) {
   app.use(vite.middlewares);
 
   app.get('*', async (req, res) => {
+    const url = req.originalUrl;
     try {
-      const url = req.originalUrl;
-      let template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
+      let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
       template = await vite.transformIndexHtml(url, template);
       const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
       const appHtml = await render(url);
@@ -31,7 +31,7 @@ async function createServer(root = process.cwd()) {
       res.status(200).setHeader('Content-Type', 'text/html').end(html);
       const parts = template.toString().split('not render');
       res.write(parts[0]);
-      const stream: ReactDOMServer.PipeableStream = render(req.url, {
+      const stream: ReactDOMServer.PipeableStream = render(url, {
         onShellReady() {
           stream.pipe(res);
         },
@@ -53,11 +53,9 @@ async function createServer(root = process.cwd()) {
   return { app };
 }
 
-//if (!isTest) {
 createServer()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   .then(({ app }: any) => {
-    app.listen(5173, () => console.log(`listening on http://localhost:5173`));
+    app.listen(PORT, () => console.log(`listening on http://localhost:${PORT}`));
   })
   .catch((e) => console.error(e));
-//}

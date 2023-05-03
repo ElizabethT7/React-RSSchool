@@ -14,10 +14,11 @@ const rootReducer = combineReducers({
   [characterApi.reducerPath]: characterApi.reducer,
 });
 
-export const setupStore = () => {
+export const setupStore = (preloadedState?: object) => {
   return configureStore({
     reducer: rootReducer,
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(characterApi.middleware),
+    preloadedState,
   });
 };
 

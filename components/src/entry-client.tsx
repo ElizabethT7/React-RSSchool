@@ -4,17 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 import { setupStore } from './state/store';
-import { hydrate } from 'react-dom';
+import ReactDOM from 'react-dom/client';
 
-const store = setupStore();
+const store = setupStore(window.__INITIAL_STATE__);
 
-hydrate(
+ReactDOM.hydrateRoot(
+  document.getElementById('root') as HTMLElement,
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
     </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById('root') as HTMLElement
+  </React.StrictMode>
 );

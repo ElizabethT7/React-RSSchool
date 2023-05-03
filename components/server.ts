@@ -25,11 +25,11 @@ async function createServer(root = process.cwd()) {
       let template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
       template = await vite.transformIndexHtml(url, template);
       const render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
-      render(req.url, res);
-      //const parts = template.split('<!--app-html-->');
-      /*res.statusCode = 200;
+      //render(req.url, res);
+      const parts = template.split('<!--app-html-->');
+      res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
-      //res.write(parts[0]);
+      res.write(parts[0]);
       const stream: ReactDOMServer.PipeableStream = render(url, {
         onShellReady() {
           stream.pipe(res);
@@ -38,7 +38,7 @@ async function createServer(root = process.cwd()) {
           res.write(parts[1]);
           res.end();
         },
-      });*/
+      });
     } catch (e: Error | unknown) {
       vite.ssrFixStacktrace(e as Error);
     }

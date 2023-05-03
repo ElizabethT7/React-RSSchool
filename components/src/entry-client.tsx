@@ -6,7 +6,7 @@ import './index.css';
 import { setupStore } from './state/store';
 import ReactDOM from 'react-dom/client';
 
-const store = setupStore(window.__INITIAL_STATE__);
+const store = setupStore();
 
 ReactDOM.hydrateRoot(
   document.getElementById('root') as HTMLElement,

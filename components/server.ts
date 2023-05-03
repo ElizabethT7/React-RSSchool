@@ -22,16 +22,15 @@ async function createServer(root = process.cwd()) {
   app.get('*', async (req: Request, res: Response) => {
     try {
       const url = req.originalUrl;
-      let template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
+      let template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
       template = await vite.transformIndexHtml(url, template);
       const render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
-      //render(req.url, res);
       const parts = template.split('<!--app-html-->');
       res.statusCode = 200;
       res.setHeader('Content-Type', 'text/html');
-      res.write(parts[0]);
-      const stream: ReactDOMServer.PipeableStream = render(url, {
+      const stream: ReactDOMServer.PipeableStream = await render(url, {
         onShellReady() {
+          res.write(parts[0]);
           stream.pipe(res);
         },
         onAllReady() {

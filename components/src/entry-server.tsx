@@ -17,10 +17,7 @@ export function render(path: string, options: RenderToPipeableStreamOptions) {
         </Provider>
       </StaticRouter>
     </html>,
-    {
-      ...options,
-      bootstrapScriptContent: `window.__INITIAL_STATE__ = ${JSON.stringify(store.getState())};`,
-    }
+    options
   );
   return stream;
 }

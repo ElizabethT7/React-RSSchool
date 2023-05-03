@@ -1,47 +1,44 @@
-import express from 'express';
+import express, { Response, Request } from 'express';
 import fs from 'fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ViteDevServer, createServer as createViteServer } from 'vite';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const PORT = process.env.PORT || 3001;
+const PORT = 5173;
 
 async function createServer(root = process.cwd()) {
   const app = express();
 
   const vite: ViteDevServer = await createViteServer({
     root,
+    base: '/',
     server: { middlewareMode: true },
     appType: 'custom',
   });
 
   app.use(vite.middlewares);
 
-  app.get('*', async (req, res) => {
-    const url = req.originalUrl;
+  app.get('*', async (req: Request, res: Response) => {
     try {
-      const template = fs.readFileSync(path.resolve(__dirname, 'index.html'), 'utf-8');
-      const html = await vite.transformIndexHtml(url, template);
-      const { render } = await vite.ssrLoadModule('/src/entry-server.tsx');
-      const parts = html.toString().split('not render');
-      res.status(200).setHeader('Content-Type', 'text/html');
-      res.write(parts[0]);
+      const url = req.originalUrl;
+      let template = fs.readFileSync(path.resolve(__dirname, 'dist/client/index.html'), 'utf-8');
+      template = await vite.transformIndexHtml(url, template);
+      const render = (await vite.ssrLoadModule('/src/entry-server.tsx')).render;
+      render(req.url, res);
+      //const parts = template.split('<!--app-html-->');
+      /*res.statusCode = 200;
+      res.setHeader('Content-Type', 'text/html');
+      //res.write(parts[0]);
       const stream: ReactDOMServer.PipeableStream = render(url, {
         onShellReady() {
           stream.pipe(res);
-        },
-        onShellError() {
-          console.log('Error');
         },
         onAllReady() {
           res.write(parts[1]);
           res.end();
         },
-        onError(err: Error | unknown) {
-          console.error(err);
-        },
-      });
+      });*/
     } catch (e: Error | unknown) {
       vite.ssrFixStacktrace(e as Error);
     }

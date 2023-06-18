@@ -9,7 +9,7 @@ import { CharacterState } from '../../state/reducers/characterSlice';
 describe('MainPage', () => {
   it('Renders text', () => {
     renderWithProviders(<MainPage />);
-    expect(screen.getByText(/Search Bar & Cards/i)).toBeInTheDocument();
+    expect(screen.getByText(/Find a companion for your journey/i)).toBeInTheDocument();
   });
   it('Renders card from api', async () => {
     renderWithProviders(<MainPage />);

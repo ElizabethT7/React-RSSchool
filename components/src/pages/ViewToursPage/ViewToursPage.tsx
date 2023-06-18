@@ -9,7 +9,7 @@ const ViewToursPage = () => {
   };
 
   return (
-    <div className={style.container}>
+    <main className={style.container}>
       <h1>Search Bar & Cards</h1>
       <SearchBar placeholder="Where do you want to go?" onSearch={onSearch} />
       <div className={style.cards}>
@@ -17,7 +17,7 @@ const ViewToursPage = () => {
           <Card card={card} key={card.id} />
         ))}
       </div>
-    </div>
+    </main>
   );
 };
 

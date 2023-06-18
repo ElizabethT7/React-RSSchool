@@ -3,13 +3,13 @@ import './NotFound.module.css';
 
 const NotFoundPage = () => {
   return (
-    <div>
+    <main>
       <h2>404 Page not found</h2>
       <p>
         This page doesn&apos;t exist. Go
         <Link to="/"> home</Link>
       </p>
-    </div>
+    </main>
   );
 };
 

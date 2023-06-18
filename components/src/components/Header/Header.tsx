@@ -1,12 +1,10 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import styles from './Header.module.css';
 
-import Footer from '../Footer/Footer';
-import styles from './Layout.module.css';
-
-const Layout = () => {
+const Header = () => {
   return (
-    <div className={styles.layout}>
-      <header className={styles.header}>
+    <header className={styles.header}>
+      <div className={styles.wrapper}>
         <NavLink to="/" style={({ isActive }) => ({ color: isActive ? '#638110de' : '#ffffffde' })}>
           Home
         </NavLink>
@@ -28,13 +26,9 @@ const Layout = () => {
         >
           Add tours
         </NavLink>
-      </header>
-      <main className={styles.main}>
-        <Outlet />
-      </main>
-      <Footer />
-    </div>
+      </div>
+    </header>
   );
 };
 
-export default Layout;
+export default Header;

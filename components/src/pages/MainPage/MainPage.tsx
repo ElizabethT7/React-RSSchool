@@ -19,8 +19,8 @@ const MainPage = () => {
   };
 
   return (
-    <div className={style.container}>
-      <h1>Search Bar & Cards</h1>
+    <main className={style.container}>
+      <h1>Find a companion for your journey</h1>
       <SearchBar placeholder="Input name..." onSearch={onSearch} />
       {error && <div>Could not fetch the data from this resource. Try input other name</div>}
       {isLoading ? (
@@ -33,7 +33,7 @@ const MainPage = () => {
             ))}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

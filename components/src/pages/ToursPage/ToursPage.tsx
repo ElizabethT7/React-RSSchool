@@ -22,7 +22,7 @@ const ToursPage = () => {
   };
 
   return (
-    <section className={styles.tours}>
+    <main className={styles.tours}>
       <h2>Are you tour operator?</h2>
       <p>Complete form and leave information about the tour</p>
       <section className={styles.form__container}>
@@ -41,7 +41,7 @@ const ToursPage = () => {
           ))}
         </div>
       </section>
-    </section>
+    </main>
   );
 };
 
